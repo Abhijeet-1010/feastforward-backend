@@ -17,4 +17,5 @@ const sendEmail = async (to, otp) => {
   });
 };
 
+
 module.exports = sendEmail;

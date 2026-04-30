@@ -55,13 +55,14 @@ const getVolunteers = async (req, res) => {
 
 const sendOtp = async (req, res) => {
   try {
+    console.log("🔥 OTP API HIT");
     const { email } = req.body;
 
     const otp = Math.floor(100000 + Math.random() * 900000);
 
     otpStore[email] = otp;
 
-    await sendEmail(email, otp);
+    // await sendEmail(email, otp);
 
     res.json({ message: "OTP sent successfully" });
 
