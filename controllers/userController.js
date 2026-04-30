@@ -62,12 +62,16 @@ const sendOtp = async (req, res) => {
 
     otpStore[email] = otp;
 
-    await Promise.race([
-      sendEmail(email, otp),
-      new Promise((_, reject) =>
-        setTimeout(() => reject(new Error("Email timeout")), 8000)
-      ),
-    ]);
+    try {
+      await Promise.race([
+        sendEmail(email, otp),
+        new Promise((_, reject) =>
+          setTimeout(() => reject(new Error("Email timeout")), 8000)
+        ),
+      ]);
+    } catch (err) {
+      console.error("Email failed:", err.message);
+    }
 
     res.json({ message: "OTP sent successfully" });
 
