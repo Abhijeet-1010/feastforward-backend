@@ -1,23 +1,17 @@
-const nodemailer = require("nodemailer");
+const sgMail = require("@sendgrid/mail");
+
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 const sendEmail = async (email, otp) => {
-  const transporter = nodemailer.createTransport({
-    host: "sandbox.smtp.mailtrap.io",
-    port: 2525,
-    auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS,
-    },
-  });
-
-  await transporter.sendMail({
-    from: '"FeastForward" <no-reply@feastforward.com>',
+  const msg = {
     to: email,
+    from: process.env.EMAIL_USER, // verified sender
     subject: "Your OTP Code",
     text: `Your OTP is ${otp}`,
-  });
+  };
 
-  console.log("✅ Mailtrap email sent");
+  await sgMail.send(msg);
+  console.log("✅ Email sent via SendGrid");
 };
 
 module.exports = sendEmail;
